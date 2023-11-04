@@ -1,0 +1,13 @@
+**
+!out/
+!out/extension.js
+!media/index.html
+!media/style.css
+!small_logo.png
+!package.json
+!logo.svg
+!logo-dark.svg
+!logo-light.svg
+!LICENSE
+!README.md
+!assets/small_logo.svg

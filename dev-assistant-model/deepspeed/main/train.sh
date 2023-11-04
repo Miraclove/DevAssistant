@@ -1,0 +1,16 @@
+python -m torch.distributed.launch \
+        --nproc_per_node 3 train.py \
+        --model_path="/home/uework/AiWeb/pwz/github/model/starcoderbase-3b" \
+        --dataset_name="/home/uework/AiWeb/pwz/github/data/dataset/shengqu-lua-train" \
+        --data_column "content" \
+        --seq_length 2048 \
+        --max_steps 100 \
+        --batch_size 1 \
+        --gradient_accumulation_steps 1 \
+        --learning_rate 5e-5 \
+        --num_warmup_steps 500 \
+        --eval_freq 3000 \
+        --save_freq 3000 \
+        --log_freq 1 \
+        --num_workers="$(nproc)" \
+	    --no_fp16

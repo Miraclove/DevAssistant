@@ -1,0 +1,141 @@
+
+<html>
+    <head>
+      <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'unsafe-eval' 'unsafe-inline' vscode-resource:; style-src vscode-resource: 'unsafe-inline';"> -->
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+        <link rel="stylesheet" href="{{style.css}}">
+    </head>
+    <body>
+    <!-- partial:index.partial.html -->
+    <div class="flexbox">
+      <div class="chat-box">
+        <div class="chat-box-header">
+          <h3>DevAssistant - Query about your development!<br/></h3>
+        </div>
+        <div id="chat_box_body" class="chat-box-body">
+            <div id="chat_messages">
+
+
+            </div>
+        </div>
+        <div id="typing">
+          <div><span></span> <span></span> <span></span> <span class="n">Someone</span> is typing...</div>
+        </div>
+        <div class="chat-box-footer">
+          <textarea id="chat_input" placeholder="Query here..."></textarea>
+          <button id="send" onclick="sendMessage()">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="#006ae3" d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+        <script>
+
+            const vscode = acquireVsCodeApi();
+
+            var textarea = document.getElementById("chat_input");
+            var heightLimit = 200; /* Maximum height: 200px */
+
+            textarea.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    const input = document.getElementById('chat_input');
+                    if(input.value){
+                      sendMessage();
+                    }else{
+                        input.placeholder='Please write something!'
+                    }
+                }
+            });
+
+            textarea.oninput = function() {
+              textarea.style.height = ""; /* Reset the height*/
+              textarea.style.height = Math.min(textarea.scrollHeight, heightLimit) + "px";
+            };
+
+            textarea.addEventListener('input', function() {
+                if (this.scrollHeight > this.clientHeight) {
+                    this.setAttribute('multiple-lines', '');
+                } else {
+                    this.removeAttribute('multiple-lines');
+                }
+            });
+
+            async function sendMessage() {
+              const input = document.getElementById('chat_input');
+              const chat = document.getElementById('chat_messages');
+              var elem = document.getElementById('chat_box_body');
+              const message = input.value;
+
+              const requestData = {
+                  inputs: message,
+                 parameters: {
+                      stream: true,
+                      max_tokens: 512,
+                      // Add other parameters as needed
+                  }
+              };
+
+              const response = await fetch("{{chatEndpoint}}", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(requestData)
+              });
+
+              chat.innerHTML += `<div class="profile my-profile">
+                      <span>Your Query</span>
+                      &nbsp
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg" width="30" height="30" />
+
+                    </div>
+                    <div class="message my-message"> `
+                          +input.value+
+                      `</div>`;
+
+              const reader = response.body.getReader();
+
+              // remove input text and scroll to bottom
+              input.value = '';
+              
+              elem.scrollTo({
+                top: elem.scrollHeight,
+                behavior:"smooth"
+              });
+              input.style.height = ''
+              input.removeAttribute('multiple-lines');
+              prev_chat = chat.innerHTML;
+              // loading stream input
+              while (true) {
+                  // scroll to bottom
+                  elem.scrollTo({
+                        top: elem.scrollHeight,
+                        behavior:"auto"
+                  });
+                  const { done, value } = await reader.read();
+                  if (done) break;
+                  const decoded = new TextDecoder().decode(value);
+                  const messages = decoded.split("\0").filter(Boolean);  // Split by null character
+                  for (const msg of messages) {
+                      const parsed = JSON.parse(msg);
+                      chat.innerHTML = prev_chat+`<div class="profile other-profile">
+                                      <i class="fa-solid fa-code"></i>
+                                  <img src="https://cdn.iconscout.com/icon/free/png-512/free-code-280-460136.png?f=avif&w=256" width="30" height="30" />
+                                  &nbsp
+                                  <span> DevAssistant Bot</span>
+                                    </div>
+                                  <div class="message other-message">
+                                    ${parsed.generated_text}
+                                    </div>`;
+                  }
+                  
+
+              }
+          }
+        </script>
+    </body>
+    </html>

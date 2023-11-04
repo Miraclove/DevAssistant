@@ -1,0 +1,318 @@
+{
+  "publisher": "Weizhi Peng",
+  "name": "devassistant-vscode",
+  "version": "0.1.1",
+  "displayName": "DevAssistant",
+  "description": "AI Autocomplete for OSS code-gen models and chat for api usage",
+  "icon": "small_logo.png",
+  "author": "Weizhi Peng <jimpeng98@gmail.com> (https://pengwz.info/)",
+  "license": "License at https://github.com/huggingface/huggingface-vscode",
+  "galleryBanner": {
+    "color": "#100f11",
+    "theme": "dark"
+  },
+  "badges": [
+    {
+      "url": "https://img.shields.io/github/stars/huggingface/huggingface-vscode?style=social",
+      "description": "Star huggingface-vscode on Github",
+      "href": "https://github.com/huggingface/huggingface-vscode"
+    },
+    {
+      "url": "https://img.shields.io/twitter/follow/huggingface?style=social",
+      "description": "Follow Huggingface on Twitter",
+      "href": "https://twitter.com/huggingface"
+    }
+  ],
+  "homepage": "https://hf.co",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huggingface/huggingface-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/huggingface/huggingface-vscode/issues",
+    "email": "mishig@hf.co"
+  },
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "lua",
+    "python",
+    "C",
+    "C++",
+    "Java"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension",
+  "scripts": {
+    "analyze:bundle": "webpack --env analyzeBundle",
+    "vscode:prepublish": "yarn --frozen-lockfile && yarn clear-out && webpack --mode production",
+    "compile": "webpack --mode development --watch",
+    "build": "webpack --mode development",
+    "test:copyassets": "ncp ./src/test/fixture ./out/test/fixture/",
+    "prettier": "prettier --write src/",
+    "prettier:check": "prettier --check src/",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "test:prepare": "yarn clear-out && tsc && yarn test:copyassets",
+    "test": "yarn test:prepare && node ./out/test/runTest.js",
+    "vsce:package": "vsce package",
+    "vsce:publish": "vsce publish",
+    "ovsx:publish": "ovsx publish",
+    "teamcity:test": "tsc && node ./out/test/runTest.js",
+    "clear-out": "rimraf ./out"
+  },
+  "peerDependencies": {
+    "vscode": "^1.1.37"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/debounce": "^1.2.1",
+    "@types/diff": "^5.0.2",
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.2.2",
+    "@types/mock-fs": "^4.13.0",
+    "@types/ncp": "^2.0.4",
+    "@types/node": "^12.0.10",
+    "@types/node-fetch": "^2.6.3",
+    "@types/rimraf": "^3.0.0",
+    "@types/semver": "^7.3.4",
+    "@types/sinon": "^9.0.11",
+    "@types/tmp": "^0.2.0",
+    "@types/vscode": "^1.50.0",
+    "@types/yauzl": "^2.9.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "assert": "^2.0.0",
+    "chai": "^4.2.0",
+    "chai-shallow-deep-equal": "^1.4.6",
+    "deep-object-diff": "^1.1.0",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "glob": "^7.1.6",
+    "husky": "^5.1.2",
+    "lint-staged": "^13.0.4",
+    "mocha": "^10.1.0",
+    "mocha-teamcity-reporter": "^3.0.0",
+    "mock-fs": "^4.13.0",
+    "ncp": "^2.0.0",
+    "ovsx": "^0.5.2",
+    "prettier": "2.2.1",
+    "rimraf": "^3.0.2",
+    "sinon": "^10.0.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.4.1",
+    "ts-mockito": "^2.6.1",
+    "typescript": "^4.2.2",
+    "vsce": "^1.93.0",
+    "vscode-test": "^1.6.1",
+    "webpack": "^5.75.0",
+    "webpack-bundle-analyzer": "^4.7.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "debounce": "^1.2.1",
+    "diff": "^5.0.0",
+    "eslint-plugin-no-only-tests": "^3.1.0",
+    "extract-zip": "^2.0.1",
+    "https-proxy-agent": "^5.0.0",
+    "node-fetch": "^3.3.0",
+    "semver": "^7.3.2",
+    "systeminformation": "^5.6.10",
+    "tmp": "^0.2.1",
+    "vscode-extension-telemetry": "^0.1.7"
+  },
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "custom-activitybar",
+          "title": "DevAssistant Chat",
+          "icon": "assets/small_logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "custom-activitybar": [
+        {
+          "type": "webview",
+          "id": "vscodeSidebar.openview",
+          "name": "",
+          "contextualTitle": ""
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscodeSidebar.menu.view",
+          "group": "navigation",
+          "when": "view == vscodeSidebar.openview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "vscodeSidebar.openview",
+        "title": "DevAssistant"
+      },
+      {
+        "command": "vscodeSidebar.menu.view",
+        "category": "vscode-extension-sidebar-html",
+        "title": "Clear Chat History",
+        "icon": "$(clear-all)"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "DevAssistant",
+        "properties": {
+          "DevAssistant.configTemplate": {
+            "type": "string",
+            "enum": ["Custom"],
+            "default": "Custom",
+            "description": "Choose an option from the dropdown."
+          },
+          "DevAssistant.allowCollectData": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable or disable user data collection, only targetFileType data will be collected "
+          },
+          "DevAssistant.targetFileType":{
+            "type": "string",
+            "default": ".lua",
+            "description": "The file type that you want for code development (ex: .cpp for C++, .lua for Lua, .py for Python)"
+          },
+          "DevAssistant.modelEndpoint": {
+            "type": "string",
+            "default": "http://192.168.103.165:10001/api/generate/",
+            "description": "Supply server endpoint (ex: https://bigcode-large-xl.eu.ngrok.io/generate) to which request will be sent to."
+          },
+          "DevAssistant.chatEndpoint": {
+            "type": "string",
+            "default": "http://192.168.103.165:10088/api/chat/",
+            "description": "Supply server endpoint (ex: https://bigcode-large-xl.eu.ngrok.io/generate) to which request will be sent to."
+          },
+          "DevAssistant.isFillMode": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to send to inference server: codes that are on top of cursor only (isFillMode=false) OR codes that are both above & below the cursor (isFillMode=true)"
+          },
+          "DevAssistant.autoregressiveModeTemplate": {
+            "type": "string",
+            "default": "[prefix]",
+            "description": "Token `[prefix]` is replaced by contents of a text file from the beginning to the cursor. Token `[suffix]` is replaced by contents of a text file from the cursor to the end. So you can provide your own format template for ex: `<s>[prefix]</s>`"
+          },
+          "DevAssistant.fillModeTemplate": {
+            "type": "string",
+            "default": "<fim_prefix>[prefix]<fim_suffix>[suffix]<fim_middle>",
+            "description":  "Token `[prefix]` is replaced by contents of a text file from the beginning to the cursor. Token `[suffix]` is replaced by contents of a text file from the cursor to the end. So you can provide your own format template for ex: `<start>[prefix]<fill>[suffix]<middle>`"
+          },
+          "DevAssistant.temperature": {
+            "type": "float",
+            "default": 0.2,
+            "description": "Sampling temperature"
+          },
+          "DevAssistant.maxNewTokens": {
+            "type": "integer",
+            "default": 60,
+            "description": "Max number of new tokens to be generated. The accepted range is [50-500] both ends inclusive. Be warned that the latency of a request will increase with higher number."
+          },
+          "DevAssistant.stopTokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["<|endoftext|>"],
+            "description": "(Optional) Stop tokens"
+          },
+          "DevAssistant.tokensToClear": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["<fim_middle>"],
+            "description": "(Optional) Tokens that should be cleared from the resulting output. For example, in FIM mode, one usually wants to clear FIM token from resulting outout."
+          },
+          "DevAssistant.attributionWindowSize": {
+            "type": "integer",
+            "default": 250,
+            "description": "Number of characters to scan for code attribution"
+          }
+        }
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "cmd+shift+l",
+        "command": "editor.action.inlineSuggest.trigger"
+      },
+      {
+        "key": "tab",
+        "command": "tabnine.accept-inline-suggestion",
+        "when": "tabnine.snippet-suggestion:enabled && tabnine.in-inline-suggestions || tabnine.inline-suggestion:enabled && tabnine.in-inline-suggestions"
+      },
+      {
+        "key": "tab",
+        "command": "tabnine.tab-override",
+        "when": "tabnine.tab-override && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "tab",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "tabnine.tab-override && inlineSuggestionVisible && !editorTabMovesFocus"
+      },
+      {
+        "key": "cmd+shift+a",
+        "command": "tabnine.attribution"
+      },
+      {
+        "key": "ctrl+z",
+        "mac": "cmd+z",
+        "command": "tabnine.escape-inline-suggestion",
+        "when": "tabnine.snippet-suggestion:enabled && tabnine.in-inline-suggestions || tabnine.inline-suggestion:enabled && tabnine.in-inline-suggestions"
+      },
+      {
+        "key": "alt+]",
+        "command": "tabnine.next-inline-suggestion",
+        "when": "tabnine.snippet-suggestion:enabled && tabnine.in-inline-suggestions || tabnine.inline-suggestion:enabled && tabnine.in-inline-suggestions"
+      },
+      {
+        "key": "alt+[",
+        "command": "tabnine.prev-inline-suggestion",
+        "when": "tabnine.snippet-suggestion:enabled && tabnine.in-inline-suggestions || tabnine.inline-suggestion:enabled && tabnine.in-inline-suggestions"
+      },
+      {
+        "key": "alt+.",
+        "mac": "ctrl+.",
+        "command": "tabnine.snippet-suggestion",
+        "when": "tabnine.snippet-suggestion:enabled"
+      }
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,css,md}": "prettier --write src/"
+  }
+}

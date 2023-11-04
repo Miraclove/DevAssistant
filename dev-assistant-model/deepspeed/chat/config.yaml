@@ -1,0 +1,41 @@
+# Model arguments
+model_name_or_path: /home/uework/AiWeb/pwz/github/model/luacoder-7b/beta2/checkpoint-2272
+torch_dtype: bfloat16
+quantized: False
+wandb_run_name: luachat-7b-beta2
+
+
+# Data training arguments
+block_size: 128
+dataset_name: /home/uework/AiWeb/pwz/github/data/dataset/dialogue-lua
+dialogue_template: no_system
+preprocessing_num_workers: 8
+
+# Training arguments with sensible defaults
+# Add other options from here: https://huggingface.co/docs/transformers/v4.26.1/en/main_classes/trainer#transformers.TrainingArguments
+fp16: False
+bf16: True # Gives ~2x speed up in training time, but disable if you start seeing NaNs
+do_train: true
+evaluation_strategy: epoch # One of ["no", "steps", "epoch"]
+gradient_accumulation_steps: 1
+gradient_checkpointing: true
+learning_rate: 2.0e-05
+log_level: passive
+logging_steps: 1
+logging_strategy: steps
+lr_scheduler_type: cosine
+max_steps: -1
+num_train_epochs: 10
+output_dir: /home/uework/AiWeb/pwz/github/model/luachat-7b/beta2
+overwrite_output_dir: true
+per_device_eval_batch_size: 1
+per_device_train_batch_size: 1
+remove_unused_columns: true
+report_to:
+- tensorboard
+- wandb
+save_strategy: epoch
+save_total_limit: null
+seed: 42
+warmup_ratio: 0.03
+weight_decay: 0.

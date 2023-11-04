@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Training Monitor</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Model Training Monitor</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Current Script</h5>
+            <p class="card-text">{{ current_script or "No script is currently running." }}</p>
+            <h5>Current Script Output:</h5>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Scripts in Queue</h5>
+            <ul id="scripts-in-queue">
+            {% for script in scripts_in_queue %}
+                <li>{{ script }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <form action="/add_script" method="post" class="mb-4">
+        <div class="form-group">
+            <label for="script_path">Script Path:</label>
+            <input type="text" class="form-control" id="script_path" name="script_path" placeholder="Enter script path">
+        </div>
+        <button type="submit" class="btn btn-primary">Add to Queue</button>
+    </form>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Scripts Finished</h5>
+            <ul id="finished-scripts">
+            {% for script in finished_scripts %}
+                <li>{{ script }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Scripts Failed</h5>
+            <ul id="failed-scripts">
+            {% for script in failed_scripts %}
+                <li>{{ script }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    
+</div>
+
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    socket.on('script_output', function(data) {
+        var outputElem = document.getElementById('output');
+        var lines = outputElem.textContent.split('\n');
+        data.data = data.data.replace(/\n$/, '');  // Remove trailing newline
+        lines.push(data.data);
+        if (lines.length > 10) {
+            lines.shift();  // Remove the oldest line
+        }
+        outputElem.textContent = lines.join('\n');
+    });
+
+    socket.on('script_finished', function(data) {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(data.script));
+        document.getElementById('finished-scripts').appendChild(li);
+    });
+
+    socket.on('script_failed', function(data) {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(data.script));
+        document.getElementById('failed-scripts').appendChild(li);
+    });
+    
+    socket.on('queue_updated', function(data) {
+        var ul = document.getElementById('scripts-in-queue');
+        ul.innerHTML = '';  // Clear the list
+        data.scripts_in_queue.forEach(function(script) {
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(script));
+            ul.appendChild(li);
+        });
+    });
+    socket.on('current_script', function(data) {
+        document.querySelector('.card-text').textContent = data.current_script;
+    });
+</script>
+</body>
+</html>

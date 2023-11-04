@@ -1,0 +1,5 @@
+vllm
+transformers
+accelerate>=0.20.3
+six
+marko
