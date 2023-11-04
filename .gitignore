@@ -1,4 +1,8 @@
+# mac file
+.DS_Store
 
+# build file
+*.vsix
 # Byte-compiled / optimized / DLL files
 
 .history/

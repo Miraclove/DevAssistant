@@ -2,7 +2,7 @@
 
 It was forked from [tabnine-vscode](https://github.com/codota/tabnine-vscode) & modified for making it compatible with open source code models. 
 
-## 版本
+## Version
 **DevAssistant-vscode beta 0.1.1**
 
 - Starting a conversation

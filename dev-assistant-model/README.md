@@ -1,8 +1,8 @@
-# Fine-tuning LuaCoder for chat-based applications
+# Fine-tuning DevAssistant for chat-based applications
 
 ## Version
 
-**luacoder toolkit 0.0.1**
+**devassistant toolkit 0.0.1**
 - data processing for chat interaction and code generation
 - model training using deepspeed with chat and code generation model
 - evaluation with code and chat inference
@@ -10,7 +10,7 @@
 ## File Structure
 
 ```
-luacoder/
+devassistant/
     set-up.sh       # some short cut for quick setup
     README.md       # this file
     eval/           # eval model
